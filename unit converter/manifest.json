@@ -1,26 +1,24 @@
 {
   "manifest_version": 2,
- 
-  "name": "Imperial or metric",
-  "description": "This extension converts units of measurment  from and to metric and imperial system on the fly in all the web pages, depending on the user's choice.",
+  "name": "Metric or Impelrial system",
   "version": "1.0",
+  "description": 	"This extension converts units of measurment  from and to metric and imperial system on the fly in all the web pages, depending on the user's choice.",
   "permissions": ["storage","tabs","http://*/" ,"activeTab","*://*/*"],
-  "icons" : { "16": "images/16.png",
-            "48": "images/48.png",
-            "128": "images/128.png" },
+  "icons" : {"16"	: "images/16.png",
+			 "48"	: "images/48.png",
+             "128"	: "images/128.png" },
  
   "browser_action": {
-    "default_icon": "images/16.png",
-    "default_popup": "options.html",
-	"default_title": "Metric or Imperial - click for options" 
-	
+    "default_icon"  :	"images/16.png",
+    "default_popup" :	"options.html",
+	"default_title" :	"Metric or Imperial - click for options" 
   },
   "content_scripts": [
     {
 	"matches": ["<all_urls>"],
-	
-      "js": ["background.js"],
-	   "run_at": "document_end"   
+      "js"		: ["background.js"],
+	  "run_at"	: "document_end"   
     }
-  ]
+  ],
+  "author": "Tihomir Jovcevski"
 }

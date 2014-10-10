@@ -1,21 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<script src="options.js"></script>
-	<title>Well come to the Imperial to metric unit converter</title>
+<title>Wellcome to the Imperial or Metric automatic unit converter</title>
+<link rel="stylesheet" href="popup.css">
+<script src="options.js"></script>
 </head>
-<body>
-
-provide us with the simple answer of witch measurement you prefer:
-<select id="units">
- <option value="metric">metric</option>
- <option value="imperial">imperial</option>
-</select>
-<label>
-  <input type="checkbox" id="like">
-i like to do
-</label>
-<div id="status"></div>
-<button id="save">Save</button>
-</body>
+	<body>
+		<div id="main" style="width:255px;">
+			<div id="titletext">
+				<img src="../images/128.png" class="logo">
+			</div>
+			<h3 class="center">Imperial OR Metric system</h3>
+			<div class="separator" style="display: block;"></div>
+			<div id="iomOne">
+				<div>Please select the measurement you prefer:</div>
+				<select id="units">
+				 <option value="metric">Metric</option>
+				 <option value="imperial">Imperial</option>
+				</select></br>
+			<div class="separator" style="display: block;"></div>	
+				<label>
+				  <input type="checkbox" id="like">i like to do</label>
+				<div id="status"></div>
+				<button id="save">Save</button>
+			</div>
+	</body>
 </html>

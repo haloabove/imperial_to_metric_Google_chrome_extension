@@ -1,3 +1,40 @@
+chrome.runtime.onMessage.addListener(
+  function(request, sender) {
+
+		if (request.unitite == "metric"){
+		
+			var miMatch= /(\d+(\.\d{1,2})?)\s*(mil|mile|miles|Miles|Mile)/g;
+
+			replaceInElement(document.body, miMatch, function(match) {
+				//var link= document.createElement('a');
+				var presmetan = document.createElement('b');
+				presmetan.style.cssText = 'color: rgb(24, 100, 88);font-size: 1.2em;background-color: #eee;';
+				//ne ni treba link
+				//link.href= 'http://en.wikipedia.org/wiki/'+match[0];
+				//link.appendChild(document.createTextNode(match[0]));
+				presmetan.appendChild(document.createTextNode(fromMilesToKm(match[1])+' Kilometer '));
+				return presmetan;
+				console.log("changed to metric");
+			});
+		}else if(request.unitite == "imperial"){
+		
+		var kmMatch= /(\d+(\.\d{1,2})?)\s*(km|Km|Kilometer|Kilometers)/g;
+
+			replaceInElement(document.body, kmMatch, function(match) {
+				//var link= document.createElement('a');
+				var presmetan = document.createElement('b');
+				presmetan.style.cssText = 'color: rgb(24, 100, 88);font-size: 1.2em;background-color: #eee;';
+				//ne ni treba link
+				//link.href= 'http://en.wikipedia.org/wiki/'+match[0];
+				//link.appendChild(document.createTextNode(match[0]));
+				presmetan.appendChild(document.createTextNode(fromKmtoMi(match[1])+' Miles '));
+				return presmetan;
+				 console.log("changed to metric");
+			});
+		}
+      
+  });
+
 function replaceInElement(element, find, replace) {
     // iterate over child nodes in reverse, as replacement may increase
     // length of child node list.
@@ -58,16 +95,3 @@ function fromCmToInch(match){
 	inch = match * 0.39370;
 	return inch.toFixed(2);
 }
-// keywords to match. This *must* be a 'g'lobal regexp or it'll fail bad
-var kmMatch= /(\d+(\.\d{1,2})?)\s*(mil|mile|miles)/g;
-
-replaceInElement(document.body, kmMatch, function(match) {
-    //var link= document.createElement('a');
-    var presmetan = document.createElement('b');
-	presmetan.style.cssText = 'color: rgb(24, 100, 88);font-size: 1.2em;background-color: #eee;';
-	//ne ni treba link
-	//link.href= 'http://en.wikipedia.org/wiki/'+match[0];
-    //link.appendChild(document.createTextNode(match[0]));
-    presmetan.appendChild(document.createTextNode(fromMilesToKm(match[1])+' Kilometer '));
-	return presmetan;
-});
