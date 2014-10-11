@@ -1,3 +1,4 @@
+//self explanatory:
 function save_options() {
 	// Get a value saved in a form.
 	var theValue = document.getElementById('units').value;
@@ -35,6 +36,7 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
 				  storageChange.newValue);
 	}
 });
+//self explanatory
 function restore_options() {
 	chrome.storage.sync.get("unitite", function(items) {
 		document.getElementById('units').value = items.unitite;
@@ -45,7 +47,7 @@ chrome.storage.sync.get("saka", function(items) {
 	console.log(items);
 });
 }
-	
+//add on load restore opt. needed for seatch of prev user choices in chrome.sync.get() .So fire away!
 document.addEventListener('DOMContentLoaded', restore_options);
 
 document.addEventListener('DOMContentLoaded', function () {
