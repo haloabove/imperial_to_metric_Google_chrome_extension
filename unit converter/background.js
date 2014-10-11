@@ -71,35 +71,35 @@ function fromCmToInch(match){
 	inch = match * 0.39370;
 	return inch.toFixed(2);
 }
-//listen for the oprions.js for any user imput (eg. save changes) 
+//listen for the options.js for any user imput (eg. save changes) 
 chrome.runtime.onMessage.addListener(
   function(request, sender) {
 
-		if (request.unitite == "metric"){
+		if (request.usrOp == "metric"){
 		
 			var miMatch= /(\d+(\.\d{1,2})?)\s*(mil|mile|miles|Miles|Mile)/g;
 
 			replaceInElement(document.body, miMatch, function(match) {
 				//var link= document.createElement('a');
-				var presmetan = document.createElement('b');
-				presmetan.style.cssText = 'color: rgb(24, 100, 88);font-size: 1.2em;background-color: #eee;';
+				var itmReplaced = document.createElement('b');
+				itmReplaced.style.cssText = 'color: rgb(24, 100, 88);font-size: 1.2em;background-color: #eee;';
 				//ne ni treba link
 				//link.href= 'http://en.wikipedia.org/wiki/'+match[0];
 				//link.appendChild(document.createTextNode(match[0]));
-				presmetan.appendChild(document.createTextNode(fromMilesToKm(match[1])+' Kilometer '));
-				return presmetan;
+				itmReplaced.appendChild(document.createTextNode(fromMilesToKm(match[1])+' Kilometer '));
+				return itmReplaced;
 				console.log("changed to metric");
 			});
-		}else if(request.unitite == "imperial"){
+		}else if(request.usrOp == "imperial"){
 		
 		var kmMatch= /(\d+(\.\d{1,2})?)\s*(km|Km|Kilometer|Kilometers)/g;
 
 			replaceInElement(document.body, kmMatch, function(match) {
 				//var link= document.createElement('a');
-				var presmetan = document.createElement('b');
-				presmetan.style.cssText = 'color: rgb(24, 100, 88);font-size: 1.2em;background-color: #eee;';
-				presmetan.appendChild(document.createTextNode(fromKmtoMi(match[1])+' Miles '));
-				return presmetan;
+				var itmReplaced = document.createElement('b');
+				itmReplaced.style.cssText = 'color: rgb(24, 100, 88);font-size: 1.2em;background-color: #eee;';
+				itmReplaced.appendChild(document.createTextNode(fromKmtoMi(match[1])+' Miles '));
+				return itmReplaced;
 				 console.log("changed to metric");
 			});
 		}

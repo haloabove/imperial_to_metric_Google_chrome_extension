@@ -14,15 +14,16 @@
 			<div class="separator" style="display: block;"></div>
 			<div id="iomOne">
 				<div>Please select the measurement you prefer:</div>
-				<select id="units">
-				 <option value="metric">Metric</option>
-				 <option value="imperial">Imperial</option>
-				</select></br>
+				<form id="units">
+					<input type="radio" name="system" value="imperial">Imperial<br>
+					<input type="radio" name="system" value="metric">Metric
+				</form>
+				<button id="save">Save</button>
 			<div class="separator" style="display: block;"></div>	
 				<label>
 				  <input type="checkbox" id="like">i like to do</label>
 				<div id="status"></div>
-				<button id="save">Save</button>
+				
 			</div>
 	</body>
 </html>
