@@ -72,6 +72,7 @@ chrome.storage.sync.get("usrQt", function(items) {
 });
 }
 
+
 //add on load restore opt. needed for seatch of prev user choices in chrome.sync.get() .So fire away!
 document.addEventListener('DOMContentLoaded', restore_options);
 
