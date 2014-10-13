@@ -9,25 +9,13 @@ function save_options() {
 				  return rads[i].value;
 		   return undefined;
 		   }
-		   
-		   // var status = document.getElementById('status');
-						// status.textContent = 'Please select one of the above and well do the rest!';
-						// setTimeout(function() {
-						// status.textContent = '';
-						// }, 1750);
-		   
-		   // ; // or undefined, or your preferred default for none checked
-		// }
-
 	var theValue = getCheckedRadioValue("system");
-	console.log(theValue);
 	if (!theValue){
 	var status = document.getElementById('status');
 						status.textContent = 'Please select one of the above and well do the rest!';
 						setTimeout(function() {
 						status.textContent = '';
 						}, 3000);
-	// alert('Error: No value specified');
 	 return;
 	 }
 	var likes = document.getElementById('like').checked;
@@ -60,16 +48,20 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
 				  storageChange.newValue);
 	}
 });
-//self explanatory
+//self explanatory restore options on popup acctivated based on user pref
 function restore_options() {
 	chrome.storage.sync.get("usrOp", function(items) {
-		document.getElementById('units').value = items.usrOp;
-		console.log(items);
-});
-chrome.storage.sync.get("usrQt", function(items) {
-    document.getElementById('like').checked = items.usrQt;
-	console.log(items);
-});
+		console.log(items.usrOp);
+		if(items.usrOp === 'imperial'){
+			document.holder.system[0].checked = true;
+			var status = document.getElementById('statusPref');
+			status.textContent = 'You prefer the Imperial system!';
+		}else if(items.usrOp === 'metric'){
+			document.holder.system[1].checked = true;
+			var status = document.getElementById('statusPref');
+			status.textContent = 'You prefer the Metric system!';
+		}
+})
 }
 
 
