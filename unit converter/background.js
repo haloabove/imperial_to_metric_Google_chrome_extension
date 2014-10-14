@@ -43,12 +43,12 @@ function replaceInText(text, find, replace) {
 
 function fromMilesToKm(match){
 	var kilometers;
-	kilometers = match * 0.62137;
+	kilometers = match * 1.62137;
 	return kilometers.toFixed(2);
 }
 function fromKmtoMi(match){
 	var miles;
-	miles = match / 0.62137;
+	miles = match / 1.62137;
 	return miles.toFixed(2);
 }
 function fromFeetToMeters(match){
@@ -122,7 +122,7 @@ chrome.runtime.onMessage.addListener(
 			});
 		}else if(request.usrOp == "imperial"){
 		
-		var kmMatch= /(\d+(\.\d{1,2})?)\s*(km|Km|Kilometer|Kilometers|kilometers)/g;
+		var kmMatch= /(\d+(\.\d{1,2})?)\s*(km|Km|Kilometer|kilometer|Kilometers|kilometers)/g;
 
 			replaceInElement(document.body, kmMatch, function(match) {
 				//var link= document.createElement('a');
