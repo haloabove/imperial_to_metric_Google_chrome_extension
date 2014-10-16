@@ -71,9 +71,12 @@ function fromCmToInch(match){
 	inch = match * 0.39370;
 	return inch.toFixed(2);
 }
+
+
+
 chrome.storage.sync.get("usrOp", function(items) {
-		console.log(items.usrOp);
 		if(items.usrOp === 'imperial'){
+			console.log(items.usrOp);
 			var kmMatch= /(\d+(\.\d{1,2})?)\s*(km|Km|Kilometer|Kilometers|kilometers)/g;
 
 			replaceInElement(document.body, kmMatch, function(match) {
@@ -102,8 +105,42 @@ chrome.storage.sync.get("usrOp", function(items) {
 });
 //listen for the options.js for any user imput (eg. save changes) 
 chrome.runtime.onMessage.addListener(
-  function(request, sender) {
+	function(request, sender) {
+		
+		if (request.usrResPage === true){
 
+			chrome.storage.sync.get("usrURL", function(items) {
+			if(items.usrURL){
+					chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
+						var url = tabs[0].url;
+						console.log(url);
+						
+						chrome.storage.sync.get("usrURL", function(items) {
+							console.log(items.usrURL);
+							var found = false;
+							var index;
+							for	(index = 0; index < items.usrURL.length; index++) {
+								if (items.usrURL[index] === url)
+								{
+									found = true;
+									break;
+								}
+							}
+							
+							if (!found)
+							{
+								items.usrURL[items.usrURL.length] = url;
+								chrome.storage.sync.set({'usrURL': items.usrURL},  function() {
+								});
+							}
+						});
+					});
+				}
+
+			});
+		
+		}
+		
 		if (request.usrOp == "metric"){
 		
 			var miMatch= /(\d+(\.\d{1,2})?)\s*(mil|mile|miles|Miles|Mile)/g;
@@ -120,7 +157,8 @@ chrome.runtime.onMessage.addListener(
 				return itmReplaced;
 				console.log("changed to metric");
 			});
-		}else if(request.usrOp == "imperial"){
+		}
+		else if(request.usrOp == "imperial"){
 		
 		var kmMatch= /(\d+(\.\d{1,2})?)\s*(km|Km|Kilometer|kilometer|Kilometers|kilometers)/g;
 
