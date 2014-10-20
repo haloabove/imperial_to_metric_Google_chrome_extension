@@ -47,6 +47,7 @@ function save_options() {
 		chrome.tabs.sendMessage(tabs[0].id, {'usrOp': theValue}, function(response) {	
 		});
 	});
+	setTimeout( function() { window.close(); }, 3000);
 }
 
 //self explanatory restore options on popup acctivated based on user pref
