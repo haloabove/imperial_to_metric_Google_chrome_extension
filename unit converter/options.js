@@ -1,3 +1,10 @@
+Array.prototype.contains = function ( needle ) {
+	for (i in this) {
+		if (this[i] == needle) return true;
+	}
+	return false;
+}
+
 function save_options() {
 	// Get a value saved in a form.
 	
@@ -18,10 +25,9 @@ function save_options() {
 						}, 3000);
 	 return;
 	 }
-	var likes = document.getElementById('like').checked;
 
 	// Save it using the Chrome extension storage API.
-	chrome.storage.sync.set({'usrOp': theValue, 'usrResPage': likes},  function() {
+	chrome.storage.sync.set({'usrOp': theValue},  function() {
 	// Update status to let user know options were saved.
 		var status = document.getElementById('status');
 		status.textContent = 'Options saved.';
@@ -45,6 +51,7 @@ function save_options() {
 
 //self explanatory restore options on popup acctivated based on user pref
 function restore_options() {
+
 	chrome.storage.sync.get("usrOp", function(items) {
 		console.log(items.usrOp);
 		if(items.usrOp === 'imperial'){
@@ -52,23 +59,76 @@ function restore_options() {
 		}else if(items.usrOp === 'metric'){
 			document.holder.system[1].checked = true;
 		}
+		
 	});
-	
-}
-
-function connEcted(){
 	chrome.tabs.getSelected(null, function(tab) {
 		var url = tab.url;
 		console.log("current url" + url);
-	  chrome.tabs.sendMessage(tab.id, {savePageUrl: "now"});
-	});	
-}
 		
+		chrome.storage.sync.get(["urllist"],function (obj){
+			var t = obj.urllist || [];
+			if (t.contains(url)) 
+			{
+				document.getElementById('like').checked = true;
+			}
+		});
+	});		
+}
+function connEcted(){
+		chrome.tabs.query({
+			active: true,               // Select active tabs
+			lastFocusedWindow: true     // In the current window
+		}, function(array_of_Tabs) {
+				// Since there can only be one active tab in one active window, 
+				//  the array has only one element
+				var tab = array_of_Tabs[0];
+				// Example:
+				var url = tab.url;
+				// ... do something with url variable
+			
+			console.log("current url" + url);
+			chrome.storage.sync.get(["urllist"],function (obj){
+			   //all my functions and code are wrapped inside here, the rest of the options      
+			   //returned inside g are either primitives (booleans) and I have one object. 
+
+				var t = obj.urllist || [];
+				
+				var contains = t.indexOf(url);
+				
+				if (contains > -1)
+				{
+					t.splice(contains, 1);
+					console.log(t);
+					chrome.storage.sync.set({'urllist': t}, function (){ 
+						var status = document.getElementById('status');
+						status.textContent = 'Removed from dont run list!';
+						setTimeout(function() {
+						status.textContent = '';
+						}, 3000);
+						
+					});
+					chrome.tabs.sendMessage(tab.id, {applyScript: "restartWithScript"});
+				}
+				else
+				{
+					// to b
+					t.push(url); //Selector is a string
+					console.log(t);
+					chrome.storage.sync.set({'urllist': t}, function (){ });   
+						var status = document.getElementById('status');
+						status.textContent = 'added yo dont run list!';
+						setTimeout(function() {
+						status.textContent = '';
+						}, 3000);
+				}
+			});
+		});
+	};	
 		
 		
 	
 //add on load restore opt. needed for seatch of prev user choices in chrome.sync.get() .So fire away!
-document.addEventListener('DOMContentLoaded', restore_options);
+document.addEventListener('DOMContentLoaded', restore_options());
 
 document.addEventListener('DOMContentLoaded', function () {
       
@@ -76,8 +136,9 @@ document.getElementById('save').addEventListener('click',save_options);
 	
 });
 document.addEventListener('DOMContentLoaded', function () {
-      
-	  document.getElementById('like').addEventListener('change',connEcted);
+	
+	document.getElementById('like').addEventListener('change',connEcted);
+
 });
 
 

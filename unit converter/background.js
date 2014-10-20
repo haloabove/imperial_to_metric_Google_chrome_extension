@@ -72,17 +72,54 @@ function fromCmToInch(match){
 	return inch.toFixed(2);
 }
 
+var a = true;
+
+
 chrome.extension.onMessage.addListener(
   function(message, sender, sendResponse) {
    
     if (message.savePageUrl == "now"){
-      // save na url
-	  console.log(message.savePageUrl);
-	  //location.reload();
+
 	  }
   });
 
-chrome.storage.sync.get("usrOp", function(items) {
+chrome.storage.sync.get("usrOp","urllist", function(items) {
+		
+		
+			g = obj;
+
+		   //all my functions and code are wrapped inside here, the rest of the options      
+		   //returned inside g are either primitives (booleans) and I have one object. 
+
+			var t = g.urllist || [];
+			
+			Array.prototype.contains = function ( needle ) {
+			   for (i in this) {
+				   if (this[i] == needle) return true;
+			   }
+			   return false;
+			}
+
+			if (t.contains(url)) {
+				  chrome.tabs.sendMessage(tab.id, {savePageUrl: "now"});
+				  alert("go imam");
+				  location.reload();
+				  
+			}
+			
+			else
+			{
+			
+				  // do b
+				t.push(url); //Selector is a string
+				console.log(t);
+				chrome.storage.sync.set({'urllist': t}, function (){ });
+				console.log("ova e segasnata lista " + g.urllist[0]);	
+				alert("sejvam" + url );
+			}
+		
+		
+		
 		if(items.usrOp === 'imperial'){
 			console.log(items.usrOp);
 			var kmMatch= /(\d+(\.\d{1,2})?)\s*(km|Km|Kilometer|Kilometers|kilometers)/g;
@@ -102,119 +139,23 @@ chrome.storage.sync.get("usrOp", function(items) {
 				//var link= document.createElement('a');
 				var itmReplaced = document.createElement('b');
 				itmReplaced.style.cssText = 'color: rgb(24, 100, 88);background-color: #eee;';
-				//ne ni treba link
-				//link.href= 'http://en.wikipedia.org/wiki/'+match[0];
-				//link.appendChild(document.createTextNode(match[0]));
+				
 				itmReplaced.appendChild(document.createTextNode(fromMilesToKm(match[1])+' Kilometer '));
 				return itmReplaced;
 				console.log("changed to metric");
 			});
 		}
+		
+		
+		
+		
+		
 });
 //listen for the options.js for any user imput (eg. save changes) 
 chrome.runtime.onMessage.addListener(
 	function(request, sender) {
 
-		// if (request.usrResPage === true){
-
-			// chrome.storage.sync.get("usrURL", function(items) {
-			// if(items.usrURL){
-					// chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
-						// var url = tabs[0].url;
-						// console.log(url);
-						
-						// chrome.storage.sync.get("usrURL", function(items) {
-							// console.log(items.usrURL);
-							// var found = false;
-							// var index;
-							// for	(index = 0; index < items.usrURL.length; index++) {
-								// if (items.usrURL[index] === url)
-								// {
-									// found = true;
-									// break;
-								// }
-							// }
-							
-							// if (!found)
-							// {
-								// items.usrURL[items.usrURL.length] = url;
-								// chrome.storage.sync.set({'usrURL': items.usrURL},  function() {
-								// });
-							// }
-						// });
-					// });
-				// }
-
-			// });
 		
-		// }
-		
-
-		
-		// if (request.usrResPage === true){
-
-			// chrome.storage.sync.get("usrURL", function(items) {
-			// if(items.usrURL){
-					// chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
-						// var url = tabs[0].url;
-						// console.log(url);
-						
-						// chrome.storage.sync.get("usrURL", function(items) {
-							// console.log(items.usrURL);
-							// var found = false;
-							// var index;
-							// for	(index = 0; index < items.usrURL.length; index++) {
-								// if (items.usrURL[index] === url)
-								// {
-									// found = true;
-									// break;
-								// }
-							// }
-							
-							// if (!found)
-							// {
-								// items.usrURL[items.usrURL.length] = url;
-								// chrome.storage.sync.set({'usrURL': items.usrURL},  function() {
-								// });
-							// }
-						// });
-					// });
-				// }
-
-			// });
-		
-		// if (request.usrResPage === true){
-
-			// chrome.storage.sync.get("usrURL", function(items) {
-			// if(items.usrURL){
-					// chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
-						// var url = tabs[0].url;
-						// console.log(url);
-						
-						// chrome.storage.sync.get("usrURL", function(items) {
-							// console.log(items.usrURL);
-							// var found = false;
-							// var index;
-							// for	(index = 0; index < items.usrURL.length; index++) {
-								// if (items.usrURL[index] === url)
-								// {
-									// found = true;
-									// break;
-								// }
-							// }
-							
-							// if (!found)
-							// {
-								// items.usrURL[items.usrURL.length] = url;
-								// chrome.storage.sync.set({'usrURL': items.usrURL},  function() {
-								// });
-							// }
-						// });
-					// });
-				// }
-
-			// });
-		// }
 		
 		if (request.usrOp == "metric"){
 		
@@ -225,9 +166,6 @@ chrome.runtime.onMessage.addListener(
 				var itmReplaced = "";
 				var itmReplaced = document.createElement('b');
 				itmReplaced.style.cssText = 'color: rgb(24, 100, 88);font-size: 1.2em;background-color: #eee;';
-				//ne ni treba link
-				//link.href= 'http://en.wikipedia.org/wiki/'+match[0];
-				//link.appendChild(document.createTextNode(match[0]));
 				itmReplaced.appendChild(document.createTextNode(fromMilesToKm(match[1])+' Kilometer '));
 				return itmReplaced;
 				console.log("changed to metric");
@@ -249,3 +187,111 @@ chrome.runtime.onMessage.addListener(
 		}
       
   });
+  
+  
+  
+  //usefull functions
+  // if (request.usrResPage === true){
+
+			// chrome.storage.sync.get("usrURL", function(items) {
+			// if(items.usrURL){
+					// chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
+						// var url = tabs[0].url;
+						// console.log(url);
+						
+						// chrome.storage.sync.get("usrURL", function(items) {
+							// console.log(items.usrURL);
+							// var found = false;
+							// var index;
+							// for	(index = 0; index < items.usrURL.length; index++) {
+								// if (items.usrURL[index] === url)
+								// {
+									// found = true;
+									// break;
+								// }
+							// }
+							
+							// if (!found)
+							// {
+								// items.usrURL[items.usrURL.length] = url;
+								// chrome.storage.sync.set({'usrURL': items.usrURL},  function() {
+								// });
+							// }
+						// });
+					// });
+				// }
+
+			// });
+		
+		// }
+		
+
+		
+		// if (request.usrResPage === true){
+
+			// chrome.storage.sync.get("usrURL", function(items) {
+			// if(items.usrURL){
+					// chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
+						// var url = tabs[0].url;
+						// console.log(url);
+						
+						// chrome.storage.sync.get("usrURL", function(items) {
+							// console.log(items.usrURL);
+							// var found = false;
+							// var index;
+							// for	(index = 0; index < items.usrURL.length; index++) {
+								// if (items.usrURL[index] === url)
+								// {
+									// found = true;
+									// break;
+								// }
+							// }
+							
+							// if (!found)
+							// {
+								// items.usrURL[items.usrURL.length] = url;
+								// chrome.storage.sync.set({'usrURL': items.usrURL},  function() {
+								// });
+							// }
+						// });
+					// });
+				// }
+
+			// });
+		
+		// if (request.usrResPage === true){
+
+			// chrome.storage.sync.get("usrURL", function(items) {
+			// if(items.usrURL){
+					// chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
+						// var url = tabs[0].url;
+						// console.log(url);
+						
+						// chrome.storage.sync.get("usrURL", function(items) {
+							// console.log(items.usrURL);
+							// var found = false;
+							// var index;
+							// for	(index = 0; index < items.usrURL.length; index++) {
+								// if (items.usrURL[index] === url)
+								// {
+									// found = true;
+									// break;
+								// }
+							// }
+							
+							// if (!found)
+							// {
+								// items.usrURL[items.usrURL.length] = url;
+								// chrome.storage.sync.set({'usrURL': items.usrURL},  function() {
+								// });
+							// }
+						// });
+					// });
+				// }
+
+			// });
+		// }
+		
+		//ne ni treba link
+				//link.href= 'http://en.wikipedia.org/wiki/'+match[0];
+				//link.appendChild(document.createTextNode(match[0]));
