@@ -60,16 +60,11 @@ function restore_options() {
 	});
 	
 }
+function setUrlToRestricted (){
 
-
-
-// old , method , will try use port messaging 
-// function setUrlToRestricted (){
-
-	// var getpage = document.getElementById("like").checked;
-	// console.log(getpage);
-
-	 // chrome.storage.sync.set({'usrResPage': getpage},  function() {
+	var getpage = document.getElementById("like").checked;
+	console.log(getpage);
+	 chrome.storage.sync.set({'usrResPage': getpage},  function() {
 	// Update status to let user know options were saved.
 		// var status = document.getElementById('status');
 		// status.textContent = 'Url added to list.';
@@ -77,6 +72,7 @@ function restore_options() {
 		// status.textContent = '';`
 		// }, 1750);
 		
+<<<<<<< HEAD
 <<<<<<< HEAD
 	});
 <<<<<<< HEAD
@@ -94,20 +90,27 @@ function restore_options() {
 =======
 	// });
 	
+=======
+	});
+>>>>>>> parent of 8f465ee... finnaly , get the url
 	
-	// chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-		// chrome.tabs.sendMessage(tabs[0].id, {'usrResPage': getpage}, function(response) {	
-		// });
-	// });
 	
+<<<<<<< HEAD
 // };
 // document.addEventListener('DOMContentLoaded', function () {
       
 	  // document.getElementById('like').addEventListener('click',setUrlToRestricted);
 >>>>>>> parent of 87850cc... Revert "finnaly , get the url"
+=======
+	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+		chrome.tabs.sendMessage(tabs[0].id, {'usrResPage': getpage}, function(response) {	
+		});
+	});
+>>>>>>> parent of 8f465ee... finnaly , get the url
 	
-// });
+};
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -167,6 +170,8 @@ function connEcted(){
 >>>>>>> parent of 8f465ee... finnaly , get the url
 =======
 >>>>>>> parent of 87850cc... Revert "finnaly , get the url"
+=======
+>>>>>>> parent of 8f465ee... finnaly , get the url
 //add on load restore opt. needed for seatch of prev user choices in chrome.sync.get() .So fire away!
 document.addEventListener('DOMContentLoaded', restore_options);
 
@@ -175,9 +180,9 @@ document.addEventListener('DOMContentLoaded', function () {
 	  document.getElementById('save').addEventListener('click',save_options);
 	
 });
-
 document.addEventListener('DOMContentLoaded', function () {
       
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -197,8 +202,12 @@ document.addEventListener('DOMContentLoaded', function () {
 	  document.getElementById('like').addEventListener('click',connEcted);
 	  });
 >>>>>>> parent of 87850cc... Revert "finnaly , get the url"
+=======
+	  document.getElementById('like').addEventListener('click',setUrlToRestricted);
+>>>>>>> parent of 8f465ee... finnaly , get the url
 	
-// });
+});
+
 //test for option change
 chrome.storage.onChanged.addListener(function(changes, namespace) {
 	for (key in changes) {
@@ -211,7 +220,6 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
 				  storageChange.newValue);
 	}
 });
-
 //notes:
 //usrQp user question check or button to restore original page layout to be created ! 
 // usrOp - user option - main setting imp or met .
