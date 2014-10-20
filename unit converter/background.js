@@ -71,13 +71,7 @@ function fromCmToInch(match){
 	inch = match * 0.39370;
 	return inch.toFixed(2);
 }
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> parent of 87850cc... Revert "finnaly , get the url"
+
 chrome.extension.onMessage.addListener(
   function(message, sender, sendResponse) {
    
@@ -87,25 +81,6 @@ chrome.extension.onMessage.addListener(
 	  location.reload();
 	  }
   });
-<<<<<<< HEAD
-=======
-
-
->>>>>>> parent of 8f465ee... finnaly , get the url
-=======
-
-
->>>>>>> parent of 8f465ee... finnaly , get the url
-=======
-
-
->>>>>>> parent of 8f465ee... finnaly , get the url
-=======
->>>>>>> parent of 87850cc... Revert "finnaly , get the url"
-=======
-
-
->>>>>>> parent of 8f465ee... finnaly , get the url
 
 chrome.storage.sync.get("usrOp", function(items) {
 		if(items.usrOp === 'imperial'){
@@ -139,6 +114,42 @@ chrome.storage.sync.get("usrOp", function(items) {
 //listen for the options.js for any user imput (eg. save changes) 
 chrome.runtime.onMessage.addListener(
 	function(request, sender) {
+
+		if (request.usrResPage === true){
+
+			chrome.storage.sync.get("usrURL", function(items) {
+			if(items.usrURL){
+					chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
+						var url = tabs[0].url;
+						console.log(url);
+						
+						chrome.storage.sync.get("usrURL", function(items) {
+							console.log(items.usrURL);
+							var found = false;
+							var index;
+							for	(index = 0; index < items.usrURL.length; index++) {
+								if (items.usrURL[index] === url)
+								{
+									found = true;
+									break;
+								}
+							}
+							
+							if (!found)
+							{
+								items.usrURL[items.usrURL.length] = url;
+								chrome.storage.sync.set({'usrURL': items.usrURL},  function() {
+								});
+							}
+						});
+					});
+				}
+
+			});
+		
+		}
+		
+
 		
 		if (request.usrResPage === true){
 
@@ -195,14 +206,13 @@ chrome.runtime.onMessage.addListener(
 		
 		var kmMatch= /(\d+(\.\d{1,2})?)\s*(km|Km|Kilometer|kilometer|Kilometers|kilometers)/g;
 
-<<<<<<< HEAD
   // if (event.data.type && (event.data.getThePageURL == "now")) {
     // console.log("Content script received: " + event.data.getThePageURL);
     // port.postMessage(event.data.getThePageURL);
 	// run = false;
   // }
 // }, false);
-=======
+
 			replaceInElement(document.body, kmMatch, function(match) {
 				//var link= document.createElement('a');
 				var itmReplaced = "";
@@ -215,4 +225,3 @@ chrome.runtime.onMessage.addListener(
 		}
       
   });
->>>>>>> parent of 8f465ee... finnaly , get the url
