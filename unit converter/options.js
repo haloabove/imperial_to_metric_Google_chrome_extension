@@ -31,16 +31,11 @@ function save_options() {
 		
 	});
 	
-	var def = 'url';
-	 chrome.storage.sync.set({'usrURL': def},  function() {
-	// Update status to let user know options were saved.
-		// var status = document.getElementById('status');
-		// status.textContent = 'Url added to list.';
-		// setTimeout(function() {
-		// status.textContent = '';`
-		// }, 1750);
+	// var def = 'url';
+	 // chrome.storage.sync.set({'usrURL': def},  function() {
+	
 		
-	});
+	// });
 	
 	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 		chrome.tabs.sendMessage(tabs[0].id, {'usrOp': theValue}, function(response) {	
@@ -60,108 +55,30 @@ function restore_options() {
 	});
 	
 }
-function setUrlToRestricted (){
 
-	var getpage = document.getElementById("like").checked;
-	console.log(getpage);
-	 chrome.storage.sync.set({'usrResPage': getpage},  function() {
-	// Update status to let user know options were saved.
-		// var status = document.getElementById('status');
-		// status.textContent = 'Url added to list.';
-		// setTimeout(function() {
-		// status.textContent = '';`
-		// }, 1750);
-		
-
-
-	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-		chrome.tabs.sendMessage(tabs[0].id, {'usrResPage': getpage}, function(response) {	
-		});
-	});
-
-	// });
-	
-
-	});
-
-	
-
-// };
-// document.addEventListener('DOMContentLoaded', function () {
-      
-	  // document.getElementById('like').addEventListener('click',setUrlToRestricted);
-
-	});
-	
-	
-	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-		chrome.tabs.sendMessage(tabs[0].id, {'usrResPage': getpage}, function(response) {	
-		});
-	});
-};
-
-// function connEcted (){
-		
-		// chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-		  // chrome.tabs.sendMessage(tabs[0].id, {getThePageURL: "now"}, function(response) {
-		  // chrome.tabs.sendMessage(tabs[0].id, {restart: "reload"});
-		  
-		// console.log();
-		  // });
-		// });
-// function runTheFuckingThing (){
-
-
-// }	
-// document.addEventListener("click",
-    // function() {
-  // window.postMessage({ getThePageURL: "now"}, "*");
-// }, false);
 function connEcted(){
 	chrome.tabs.getSelected(null, function(tab) {
 		var url = tab.url;
-			console.log(url);
+		console.log("current url" + url);
 	  chrome.tabs.sendMessage(tab.id, {savePageUrl: "now"});
 	});	
-		
 }
-		// var port = chrome.runtime.connect({name: "methodForURL"});
-		// port.postMessage({getThePageURL: "now"});
-		// port.onMessage.addListener(function(msg) {
-		// if (msg.answer == "ok")
-		// var a = port.postMessage({url:activeTabId});
-		// console.log(a);
-		// port.postMessage({answer: "Reload"});
-  
-		//}
+		
+		
+		
 	
-	
-	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-		chrome.tabs.sendMessage(tabs[0].id, {'usrResPage': getpage}, function(response) {	
-		});
-	});
-	
-};
-
-};
-
-
 //add on load restore opt. needed for seatch of prev user choices in chrome.sync.get() .So fire away!
 document.addEventListener('DOMContentLoaded', restore_options);
 
 document.addEventListener('DOMContentLoaded', function () {
       
-	  document.getElementById('save').addEventListener('click',save_options);
+document.getElementById('save').addEventListener('click',save_options);
 	
 });
 document.addEventListener('DOMContentLoaded', function () {
       
 	  document.getElementById('like').addEventListener('change',connEcted);
 });
-
-	  document.getElementById('like').addEventListener('click',setUrlToRestricted);
-
-
 
 
 //test for option change
@@ -182,5 +99,89 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
 
 //TODO : 
 // implemet mechanizm for enabled on this page or not , get the current tab and in the mechanizm see if the variable is set to off and if so disable the script and reload the page  
+// usefull functions:
+
+	
+		
+		
+		// var port = chrome.runtime.connect({name: "methodForURL"});
+		// port.postMessage({getThePageURL: "now"});
+		// port.onMessage.addListener(function(msg) {
+		// if (msg.answer == "ok")
+		// var a = port.postMessage({url:activeTabId});
+		// console.log(a);
+		// port.postMessage({answer: "Reload"});
+  
+		//}
+	
+	
+	// chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+		// chrome.tabs.sendMessage(tabs[0].id, {'usrResPage': getpage}, function(response) {	
+		// });
+	// });
+	
+	// chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+		// chrome.tabs.sendMessage(tabs[0].id, {'usrResPage': getpage}, function(response) {	
+		// });
+	// });
+	// function setUrlToRestricted (){
+
+	// var getpage = document.getElementById("like").checked;
+	// console.log(getpage);
+	 // chrome.storage.sync.set({'usrResPage': getpage},  function() {
+	// Update status to let user know options were saved.
+		// var status = document.getElementById('status');
+		// status.textContent = 'Url added to list.';
+		// setTimeout(function() {
+		// status.textContent = '';`
+		// }, 1750);
+	// chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+		// chrome.tabs.sendMessage(tabs[0].id, {'usrResPage': getpage}, function(response) {	
+		// });
+	// });
+
+	// });
+	
+
+	// });
+// };
+	
+
+// };
+ // document.addEventListener('DOMContentLoaded', function () {
+      
+	  // document.getElementById('like').addEventListener('click',setUrlToRestricted);
+
+	// });
+	
+	
+	// chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+		// chrome.tabs.sendMessage(tabs[0].id, {'usrResPage': getpage}, function(response) {	
+		// });
+	// });
 
 
+// function connEcted (){
+		
+		// chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+		  // chrome.tabs.sendMessage(tabs[0].id, {getThePageURL: "now"}, function(response) {
+		  // chrome.tabs.sendMessage(tabs[0].id, {restart: "reload"});
+		  
+		// console.log();
+		  // });
+		// });
+// function runTheFuckingThing (){
+
+
+// }	
+// document.addEventListener("click",
+    // function() {
+  // window.postMessage({ getThePageURL: "now"}, "*");
+// }, false);	
+
+// Update status to let user know options were saved.
+		// var status = document.getElementById('status');
+		// status.textContent = 'Url added to list.';
+		// setTimeout(function() {
+		// status.textContent = '';`
+		// }, 1750);
