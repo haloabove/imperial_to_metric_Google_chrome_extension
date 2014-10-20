@@ -74,6 +74,7 @@ function setUrlToRestricted (){
 		
 	});
 <<<<<<< HEAD
+<<<<<<< HEAD
 	
 	
 =======
@@ -129,6 +130,17 @@ function connEcted(){
 >>>>>>> parent of 8f465ee... finnaly , get the url
 =======
 >>>>>>> parent of 8f465ee... finnaly , get the url
+=======
+	
+	
+	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+		chrome.tabs.sendMessage(tabs[0].id, {'usrResPage': getpage}, function(response) {	
+		});
+	});
+	
+};
+
+>>>>>>> parent of 8f465ee... finnaly , get the url
 //add on load restore opt. needed for seatch of prev user choices in chrome.sync.get() .So fire away!
 document.addEventListener('DOMContentLoaded', restore_options);
 
@@ -141,8 +153,12 @@ document.addEventListener('DOMContentLoaded', function () {
       
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	  document.getElementById('like').addEventListener('change',connEcted);
 });
+=======
+	  document.getElementById('like').addEventListener('click',setUrlToRestricted);
+>>>>>>> parent of 8f465ee... finnaly , get the url
 =======
 	  document.getElementById('like').addEventListener('click',setUrlToRestricted);
 >>>>>>> parent of 8f465ee... finnaly , get the url

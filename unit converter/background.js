@@ -73,6 +73,7 @@ function fromCmToInch(match){
 }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 chrome.extension.onMessage.addListener(
   function(message, sender, sendResponse) {
    
@@ -84,6 +85,10 @@ chrome.extension.onMessage.addListener(
 	  //location.reload();
 	  }
   });
+=======
+
+
+>>>>>>> parent of 8f465ee... finnaly , get the url
 =======
 
 
