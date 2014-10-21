@@ -4,7 +4,36 @@ Array.prototype.contains = function ( needle ) {
 	}
 	return false;
 }
+function parseUri (str) {
+	var	o   = parseUri.options,
+		m   = o.parser[o.strictMode ? "strict" : "loose"].exec(str),
+		uri = {},
+		i   = 14;
 
+	while (i--) uri[o.key[i]] = m[i] || "";
+
+	uri[o.q.name] = {};
+	uri[o.key[12]].replace(o.q.parser, function ($0, $1, $2) {
+		if ($1) uri[o.q.name][$1] = $2;
+	});
+
+	return uri;
+};
+parseUri.options = {
+	strictMode: false,
+	key: ["source","protocol","authority","userInfo","user","password","host","port","relative","path","directory","file","query","anchor"],
+	q:   {
+		name:   "queryKey",
+		parser: /(?:^|&)([^&=]*)=?([^&]*)/g
+	},
+	parser: {
+		strict: /^(?:([^:\/?#]+):)?(?:\/\/((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?))?((((?:[^?#\/]*\/)*)([^?#]*))(?:\?([^#]*))?(?:#(.*))?)/,
+		loose:  /^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/
+	}
+	
+};
+
+parseUri.options.strictMode = true;
 function save_options() {
 	// Get a value saved in a form.
 	
@@ -36,12 +65,7 @@ function save_options() {
 		}, 1750);
 		
 	});
-	
-	// var def = 'url';
-	 // chrome.storage.sync.set({'usrURL': def},  function() {
-	
-		
-	// });
+
 	
 	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 		chrome.tabs.sendMessage(tabs[0].id, {'usrOp': theValue}, function(response) {	
@@ -64,8 +88,8 @@ function restore_options() {
 	});
 	chrome.tabs.getSelected(null, function(tab) {
 		var url = tab.url;
-		console.log("current url" + url);
-		
+		var res = parseUri(url);
+		url = res.host;		
 		chrome.storage.sync.get(["urllist"],function (obj){
 			var t = obj.urllist || [];
 			if (t.contains(url)) 
@@ -75,6 +99,25 @@ function restore_options() {
 		});
 	});		
 }
+
+
+function clear_data() {
+
+    chrome.storage.sync.remove(["urllist"], function() {
+        for(var i = 0; i < key.length; i++)
+            key[i];
+    });
+	if(document.getElementById('like').checked == true)
+	document.getElementById('like').checked = false;
+	document.holder.system[0].checked 		= false;
+	document.holder.system[1].checked		= false;
+	var status = document.getElementById('status');
+	status.textContent = 'Options restored!';
+	setTimeout(function() {
+	status.textContent = '';
+	}, 3000);
+}
+
 function connEcted(){
 		chrome.tabs.query({
 			active: true,               // Select active tabs
@@ -85,6 +128,9 @@ function connEcted(){
 				var tab = array_of_Tabs[0];
 				// Example:
 				var url = tab.url;
+			
+				var res = parseUri(url);
+				url = res.host;		
 				// ... do something with url variable
 			
 			console.log("current url" + url);
@@ -108,7 +154,11 @@ function connEcted(){
 						}, 3000);
 						
 					});
-					chrome.tabs.sendMessage(tab.id, {applyScript: "restartWithScript"});
+						chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+							chrome.tabs.sendMessage(tabs[0].id, {applyScript : 'restartWithScript'}, function(response) {	
+							});
+						});
+				//	chrome.tabs.sendMessage(tab.id, {applyScript: "restartWithScript"});
 				}
 				else
 				{
@@ -117,7 +167,7 @@ function connEcted(){
 					console.log(t);
 					chrome.storage.sync.set({'urllist': t}, function (){ });   
 						var status = document.getElementById('status');
-						status.textContent = 'added yo dont run list!';
+						status.textContent = 'added to dont run list!';
 						setTimeout(function() {
 						status.textContent = '';
 						}, 3000);
@@ -134,6 +184,11 @@ document.addEventListener('DOMContentLoaded', restore_options());
 document.addEventListener('DOMContentLoaded', function () {
       
 document.getElementById('save').addEventListener('click',save_options);
+	
+});
+document.addEventListener('DOMContentLoaded', function () {
+      
+document.getElementById('clrusrdat').addEventListener('click', clear_data);
 	
 });
 document.addEventListener('DOMContentLoaded', function () {
@@ -155,6 +210,7 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
 				  storageChange.newValue);
 	}
 });
+
 //notes:
 //usrQp user question check or button to restore original page layout to be created ! 
 // usrOp - user option - main setting imp or met .
@@ -247,3 +303,9 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
 		// setTimeout(function() {
 		// status.textContent = '';`
 		// }, 1750);
+		
+			
+	// var def = 'url';
+	 // chrome.storage.sync.set({'usrURL': def},  function() {	
+	// });re
+	// });

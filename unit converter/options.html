@@ -6,23 +6,27 @@
 <script src="options.js"></script>
 </head>
 	<body>
-		<div id="main" style="width:255px;">
+		<div id="wrapper" style="width:255px;">
 			<div id="titletext">
 				<img src="../images/128.png" class="logo">
 			</div>
 			<h3 class="center">Imperial OR Metric system</h3>
-			<div class="separator" style="display: block;"></div>
+			
 			<div id="iomOne">
+				<div class="separator" style="display: block;"></div>
 				<div>Please select the measurement you prefer:</div>
 				<form id="units" name="holder">
 					<input type="radio" name="system" value="imperial">Imperial<br>
 					<input type="radio" name="system" value="metric">Metric<br>
-					<input type="checkbox" id="like">Do not run on this page
 				</form>
 				<button id="save">Save</button>
-			<div class="separator" style="display: block;"></div>
+				<div class="separator" style="display: block;"></div>
+				<input type="checkbox" id="like">Do not run on this page</input>
 				<div id="statusPref"></div>
 				<div id="status"></div>
+			</div>
+			<div id="iomOne">
+				<button id="clrusrdat">Restore settings.</button>
 			</div>
 	</body>
 </html>

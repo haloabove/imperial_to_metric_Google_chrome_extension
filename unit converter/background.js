@@ -75,13 +75,11 @@ function fromCmToInch(match){
 var a = true;
 
 
-chrome.extension.onMessage.addListener(
-  function(message, sender, sendResponse) {
+// chrome.extension.onMessage.addListener(
+  // function(message, sender, sendResponse) {
    
-    if (message.savePageUrl == "now"){
-
-	  }
-  });
+ 
+  // });
 
 chrome.storage.sync.get("usrOp","urllist", function(items) {
 		
@@ -103,7 +101,7 @@ chrome.storage.sync.get("usrOp","urllist", function(items) {
 			if (t.contains(url)) {
 				  chrome.tabs.sendMessage(tab.id, {savePageUrl: "now"});
 				  alert("go imam");
-				  location.reload();
+				 
 				  
 			}
 			
@@ -153,10 +151,10 @@ chrome.storage.sync.get("usrOp","urllist", function(items) {
 });
 //listen for the options.js for any user imput (eg. save changes) 
 chrome.runtime.onMessage.addListener(
-	function(request, sender) {
-
-		
-		
+	function(request, sender,message) {
+	
+	if (request.applyScript == "restartWithScript"){
+	
 		if (request.usrOp == "metric"){
 		
 			var miMatch= /(\d+(\.\d{1,2})?)\s*(mil|mile|miles|Miles|Mile)/g;
@@ -185,7 +183,12 @@ chrome.runtime.onMessage.addListener(
 				 console.log("changed to metric");
 			});
 		}
-      
+		
+		
+		 
+	  }
+	  else {
+	  }
   });
   
   
