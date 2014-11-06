@@ -10,13 +10,11 @@ function replaceInElement(element, find, replace) {
 			// special case, don't touch CDATA elements
                 replaceInElement(child, find, replace);
         } else if (child.nodeType==3) { 
-		
 		// TEXT_NODE
-            replaceInText(child, find, replace);
-			
+            replaceInText(child, find, replace);	
         }
     }
-}
+};
 function replaceInText(text, find, replace) {
     var match;
 	
@@ -38,263 +36,76 @@ function replaceInText(text, find, replace) {
 		
 		}
 
-    }
+    };
 //need to be put in a single function ASP !
 
 function fromMilesToKm(match){
 	var kilometers;
-	kilometers = match * 1.62137;
+	kilometers = match * 1.60934;
 	return kilometers.toFixed(2);
-}
+};
 function fromKmtoMi(match){
 	var miles;
-	miles = match / 1.62137;
+	miles = match / 1.60934;
 	return miles.toFixed(2);
-}
-function fromFeetToMeters(match){
-	var meters;
-	meters = match / 3.2808;
-	return meters.toFixed(2);
-}
-function fromMetersToFeet(match){
-	var feet;
-	feet = match * 3.2808;
-	return feet.toFixed(2);
-}
-function fromInchToCm(match){
-	var cm;
-	cm = match/0.39370;
-	return cm.toFixed(2);
-}
-function fromCmToInch(match){
-	var inch;
-	inch = match * 0.39370;
-	return inch.toFixed(2);
-}
-
-var a = true;
-
-
-// chrome.extension.onMessage.addListener(
-  // function(message, sender, sendResponse) {
-   
- 
-  // });
-
-chrome.storage.sync.get("usrOp","urllist", function(items) {
-		
-		
-			g = obj;
-
-		   //all my functions and code are wrapped inside here, the rest of the options      
-		   //returned inside g are either primitives (booleans) and I have one object. 
-
-			var t = g.urllist || [];
-			
-			Array.prototype.contains = function ( needle ) {
-			   for (i in this) {
-				   if (this[i] == needle) return true;
-			   }
-			   return false;
-			}
-
-			if (t.contains(url)) {
-				  chrome.tabs.sendMessage(tab.id, {savePageUrl: "now"});
-				  alert("go imam");
-				 
-				  
-			}
-			
-			else
-			{
-			
-				  // do b
-				t.push(url); //Selector is a string
-				console.log(t);
-				chrome.storage.sync.set({'urllist': t}, function (){ });
-				console.log("ova e segasnata lista " + g.urllist[0]);	
-				alert("sejvam" + url );
-			}
-		
-		
-		
+};
+// function fromFeetToMeters(match){
+	// var meters;
+	// meters = match / 3.2808;
+	// return meters.toFixed(2);
+// };
+// function fromMetersToFeet(match){
+	// var feet;
+	// feet = match * 3.2808;
+	// return feet.toFixed(2);
+// };
+// function fromInchToCm(match){
+	// var cm;
+	// cm = match/0.39370;
+	// return cm.toFixed(2);
+// };
+// function fromCmToInch(match){
+	// var inch;
+	// inch = match * 0.39370;
+	// return inch.toFixed(2);
+// };
+chrome.storage.sync.get(["usrOp","urllist"], function(items) {
+	var url = window.location.host;
+	var t = items.urllist || [];
+	if (t.indexOf(url) == -1){
 		if(items.usrOp === 'imperial'){
-			console.log(items.usrOp);
-			var kmMatch= /(\d+(\.\d{1,2})?)\s*(km|Km|Kilometer|Kilometers|kilometers)/g;
-
+			//var kmMatch= /(\d+((\.|,)\d+)?)\s*(km|Km|Kilometer|Kilometers|kilometers)\b/g;
+			var kmMatch = /((\d{1,3}([,\s.']\d{3})*|\d+)([.,]\d+)?)\s*(km|Km|Kilometer|Kilometers|kilometers)\b/g;
 			replaceInElement(document.body, kmMatch, function(match) {
 				//var link= document.createElement('a');
 				var itmReplaced = document.createElement('b');
-				itmReplaced.style.cssText = 'color: rgb(24, 100, 88);background-color: #eee;';
-				itmReplaced.appendChild(document.createTextNode(fromKmtoMi(match[1])+' Miles '));
+				//itmReplaced.style.cssText = 'color: rgb(24, 100, 88);background-color: #eee;';
+				var value = match[2].replace(/[,\s.']/, "") + (match[4] !== undefined ? match[4].replace(/[,\s.']/, ".") : ".00");
+				itmReplaced.appendChild(document.createTextNode(fromKmtoMi(value)+' Miles '));
 				return itmReplaced;
-				 console.log("changed to metric");
 			});
 		}else if(items.usrOp === 'metric'){
-			var miMatch= /(\d+(\.\d{1,2})?)\s*(mil|mile|miles|Miles|Mile)/g;
-
+			//var miMatch= /(\d+((\.|,)\d+)?)\s*(mil|Mil|mile|Mile|miles|Miles)\b/g;
+			var miMatch = /((\d{1,3}([,\s.']\d{3})*|\d+)([.,]\d+)?)\s*(mil|Mil|mile|Mile|miles|Miles)\b/g;
 			replaceInElement(document.body, miMatch, function(match) {
 				//var link= document.createElement('a');
 				var itmReplaced = document.createElement('b');
-				itmReplaced.style.cssText = 'color: rgb(24, 100, 88);background-color: #eee;';
-				
-				itmReplaced.appendChild(document.createTextNode(fromMilesToKm(match[1])+' Kilometer '));
+				//itmReplaced.style.cssText = 'color: rgb(24, 100, 88);background-color: #eee;';	
+				var value = match[2].replace(/[,\s.']/, "") + (match[4] !== undefined ? match[4].replace(/[,\s.']/, ".") : ".00");
+				itmReplaced.appendChild(document.createTextNode(fromMilesToKm(value)+' Kilometer '));
 				return itmReplaced;
-				console.log("changed to metric");
 			});
 		}
-		
-		
-		
-		
-		
+	}
 });
 //listen for the options.js for any user imput (eg. save changes) 
 chrome.runtime.onMessage.addListener(
-	function(request, sender,message) {
+	function(request, sender,sendResponse) {
 	
-	if (request.applyScript == "restartWithScript"){
+	if (request.applyScript == "restartWithScript" ){
 	
-		if (request.usrOp == "metric"){
-		
-			var miMatch= /(\d+(\.\d{1,2})?)\s*(mil|mile|miles|Miles|Mile)/g;
-
-			replaceInElement(document.body, miMatch, function(match) {
-				//var link= document.createElement('a');
-				var itmReplaced = "";
-				var itmReplaced = document.createElement('b');
-				itmReplaced.style.cssText = 'color: rgb(24, 100, 88);font-size: 1.2em;background-color: #eee;';
-				itmReplaced.appendChild(document.createTextNode(fromMilesToKm(match[1])+' Kilometer '));
-				return itmReplaced;
-				console.log("changed to metric");
-			});
-		}
-		else if(request.usrOp == "imperial"){
-		
-			var kmMatch= /(\d+(\.\d{1,2})?)\s*(km|Km|Kilometer|kilometer|Kilometers|kilometers)/g;
-
-			replaceInElement(document.body, kmMatch, function(match) {
-				//var link= document.createElement('a');
-				var itmReplaced = "";
-				var itmReplaced = document.createElement('b');
-				itmReplaced.style.cssText = 'color: rgb(24, 100, 88);font-size: 1.2em;background-color: #eee;';
-				itmReplaced.appendChild(document.createTextNode(fromKmtoMi(match[1])+' Miles '));
-				return itmReplaced;
-				 console.log("changed to metric");
-			});
-		}
-		
-		
-		 
+		location.reload();
 	  }
 	  else {
 	  }
-  });
-  
-  
-  
-  //usefull functions
-  // if (request.usrResPage === true){
-
-			// chrome.storage.sync.get("usrURL", function(items) {
-			// if(items.usrURL){
-					// chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
-						// var url = tabs[0].url;
-						// console.log(url);
-						
-						// chrome.storage.sync.get("usrURL", function(items) {
-							// console.log(items.usrURL);
-							// var found = false;
-							// var index;
-							// for	(index = 0; index < items.usrURL.length; index++) {
-								// if (items.usrURL[index] === url)
-								// {
-									// found = true;
-									// break;
-								// }
-							// }
-							
-							// if (!found)
-							// {
-								// items.usrURL[items.usrURL.length] = url;
-								// chrome.storage.sync.set({'usrURL': items.usrURL},  function() {
-								// });
-							// }
-						// });
-					// });
-				// }
-
-			// });
-		
-		// }
-		
-
-		
-		// if (request.usrResPage === true){
-
-			// chrome.storage.sync.get("usrURL", function(items) {
-			// if(items.usrURL){
-					// chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
-						// var url = tabs[0].url;
-						// console.log(url);
-						
-						// chrome.storage.sync.get("usrURL", function(items) {
-							// console.log(items.usrURL);
-							// var found = false;
-							// var index;
-							// for	(index = 0; index < items.usrURL.length; index++) {
-								// if (items.usrURL[index] === url)
-								// {
-									// found = true;
-									// break;
-								// }
-							// }
-							
-							// if (!found)
-							// {
-								// items.usrURL[items.usrURL.length] = url;
-								// chrome.storage.sync.set({'usrURL': items.usrURL},  function() {
-								// });
-							// }
-						// });
-					// });
-				// }
-
-			// });
-		
-		// if (request.usrResPage === true){
-
-			// chrome.storage.sync.get("usrURL", function(items) {
-			// if(items.usrURL){
-					// chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
-						// var url = tabs[0].url;
-						// console.log(url);
-						
-						// chrome.storage.sync.get("usrURL", function(items) {
-							// console.log(items.usrURL);
-							// var found = false;
-							// var index;
-							// for	(index = 0; index < items.usrURL.length; index++) {
-								// if (items.usrURL[index] === url)
-								// {
-									// found = true;
-									// break;
-								// }
-							// }
-							
-							// if (!found)
-							// {
-								// items.usrURL[items.usrURL.length] = url;
-								// chrome.storage.sync.set({'usrURL': items.usrURL},  function() {
-								// });
-							// }
-						// });
-					// });
-				// }
-
-			// });
-		// }
-		
-		//ne ni treba link
-				//link.href= 'http://en.wikipedia.org/wiki/'+match[0];
-				//link.appendChild(document.createTextNode(match[0]));
+});

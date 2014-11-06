@@ -12,7 +12,7 @@
   "browser_action": {
     "default_icon": "images/16.png",
     "default_popup": "options.html",
-	"default_title": "Metric or Imperial - click for options" 
+	"default_title": "Miles or Kilometers converter - click for options" 
 	
   },
   "content_scripts": [

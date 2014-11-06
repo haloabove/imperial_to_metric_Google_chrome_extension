@@ -10,23 +10,32 @@
 			<div id="titletext">
 				<img src="../images/128.png" class="logo">
 			</div>
-			<h3 class="center">Imperial OR Metric system</h3>
-			
+			<h3 class="center">Miles or Kilometers</h3>
+			<h4 class="center">ON THE FLY!</h4>
 			<div id="iomOne">
 				<div class="separator" style="display: block;"></div>
-				<div>Please select the measurement you prefer:</div>
+				<div>Select the measurement you prefer:</div>
 				<form id="units" name="holder">
-					<input type="radio" name="system" value="imperial">Imperial<br>
-					<input type="radio" name="system" value="metric">Metric<br>
+					<div class="pointer">
+						<input type="radio" name="system" value="imperial" id="radio">Miles<br>
+					</div>	
+					<div class="pointer">
+						<input type="radio" name="system" value="metric">Kilometers<br>
+					</div>
 				</form>
 				<button id="save">Save</button>
 				<div class="separator" style="display: block;"></div>
-				<input type="checkbox" id="like">Do not run on this page</input>
+				<div class="center">
+					<input type="checkbox" id="like">Do not run on this page.</input>
+				</div>
+				<div id="restore">
+					<button id="clrusrdat">Restore settings.</button>
+				</div>	
+				<div class="separator" style="display: block;"></div>
+				<div class="support"><a id="support_link" href="jovcevski.mk" >About extension</a></div>
 				<div id="statusPref"></div>
 				<div id="status"></div>
 			</div>
-			<div id="iomOne">
-				<button id="clrusrdat">Restore settings.</button>
-			</div>
+		</div>
 	</body>
 </html>
