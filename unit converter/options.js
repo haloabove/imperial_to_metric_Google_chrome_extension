@@ -62,10 +62,11 @@
 	};
 
 	ConverterOptions.prototype.save_options = function(){
-		var self =this,  theValue = self.getCheckedRadioValue("system"), status = document.getElementById('status');
+		var self = this, theValue = self.getCheckedRadioValue("system"), status = document.getElementById('status');
 
 		if (!theValue){
 			status.textContent = 'Please select one of the above and well do the rest!';
+			
 			setTimeout(function() {
 				status.textContent = '';
 			}, 3000);
@@ -74,9 +75,10 @@
 
 		chrome.storage.sync.set({'usrOp': theValue},  function() {
 			var status = document.getElementById('status');
+			
 			status.textContent = 'Options saved.';
 			setTimeout(function() {
-			status.textContent = '';
+				status.textContent = '';
 			}, 1750);
 			
 		});
@@ -105,6 +107,7 @@
 	};
 	
 	ConverterOptions.prototype.restore_options = function() {
+		var self = this;
 
 		chrome.storage.sync.get("usrOp", function(items) {
 			if(items.usrOp === 'imperial'){
@@ -118,7 +121,7 @@
 		});
 
 		chrome.tabs.getSelected(null, function(tab) {
-			var self = this, url = tab.url, res = self.parseUri(url);
+			var  url = tab.url, res = self.parseUri(url);
 
 			url = res.host;		
 			chrome.storage.sync.get(["urllist"],function (obj){
