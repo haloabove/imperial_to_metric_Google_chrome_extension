@@ -25,30 +25,30 @@
 	};
 
 	Converter.prototype.getData = function(){
+		var self = this;
+
 		chrome.storage.sync.get(["usrOp","urllist"], function(items) {
-			var url = window.location.host;
-			var t = items.urllist || [];
+			var url = window.location.host, t = items.urllist || [];
+			
 			if (t.indexOf(url) == -1){
 				if(items.usrOp === 'imperial'){
-					//var kmMatch= /(\d+((\.|,)\d+)?)\s*(km|Km|Kilometer|Kilometers|kilometers)\b/g;
 					var kmMatch = /((\d{1,3}([,\s.']\d{3})*|\d+)([.,]\d+)?)\s*(km|Km|Kilometer|Kilometers|kilometers)\b/g;
-					replaceInElement(document.body, kmMatch, function(match) {
-						//var link= document.createElement('a');
-						var itmReplaced = document.createElement('b');
-						//itmReplaced.style.cssText = 'color: rgb(24, 100, 88);background-color: #eee;';
-						var value = match[2].replace(/[,\s.']/, "") + (match[4] !== undefined ? match[4].replace(/[,\s.']/, ".") : ".00");
-						itmReplaced.appendChild(document.createTextNode(fromKmtoMi(value)+' Miles '));
+
+					self.replaceInElement(document.body, kmMatch, function(match) {
+						var itmReplaced = document.createElement('b'), value = match[2].replace(/[,\s.']/, "") + (match[4] !== undefined ? match[4].replace(/[,\s.']/, ".") : ".00");
+						
+						itmReplaced.appendChild(document.createTextNode(self.fromKmtoMi(value)+' Miles '));
 						return itmReplaced;
 					});
-				}else if(items.usrOp === 'metric'){
-					//var miMatch= /(\d+((\.|,)\d+)?)\s*(mil|Mil|mile|Mile|miles|Miles)\b/g;
+
+				}
+				if(items.usrOp === 'metric'){
+					
 					var miMatch = /((\d{1,3}([,\s.']\d{3})*|\d+)([.,]\d+)?)\s*(mil|Mil|mile|Mile|miles|Miles)\b/g;
-					replaceInElement(document.body, miMatch, function(match) {
-						//var link= document.createElement('a');
-						var itmReplaced = document.createElement('b');
-						//itmReplaced.style.cssText = 'color: rgb(24, 100, 88);background-color: #eee;';	
-						var value = match[2].replace(/[,\s.']/, "") + (match[4] !== undefined ? match[4].replace(/[,\s.']/, ".") : ".00");
-						itmReplaced.appendChild(document.createTextNode(fromMilesToKm(value)+' Kilometer '));
+					self.replaceInElement(document.body, miMatch, function(match) {
+						var itmReplaced = document.createElement('b'), value = match[2].replace(/[,\s.']/, "") + (match[4] !== undefined ? match[4].replace(/[,\s.']/, ".") : ".00");
+						
+						itmReplaced.appendChild(document.createTextNode(self.fromMilesToKm(value)+' Kilometer '));
 						return itmReplaced;
 					});
 				}
@@ -57,18 +57,16 @@
 	};
 
 	Converter.prototype.replaceInElement = function(element, find, replace) {
-	    
+	    var self = this;
+
 	    for (var i= element.childNodes.length; i-->0;) {
 	        var child= element.childNodes[i];
 	        if (child.nodeType==1) { 
-			// ELEMENT_NODE
 	            var tag= child.nodeName.toLowerCase();
 	            if (tag!='style' && tag!='script') 
-				// special case, don't touch CDATA elements
-	                replaceInElement(child, find, replace);
+	                self.replaceInElement(child, find, replace);
 	        } else if (child.nodeType==3) { 
-			// TEXT_NODE
-	            replaceInText(child, find, replace);	
+	            self.replaceInText(child, find, replace);	
 	        }
 	    }
 	};

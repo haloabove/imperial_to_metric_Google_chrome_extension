@@ -1,7 +1,7 @@
 +function(){
 
 	function ConverterOptions(){
-		this.parseUri.options = {
+		this.options = {
 			strictMode: false,
 			key: ["source","protocol","authority","userInfo","user","password","host","port","relative","path","directory","file","query","anchor"],
 			q  : {
@@ -27,12 +27,12 @@
 	ConverterOptions.prototype.attachEvents = function(){
 		var self = this; 
 
-		document.addEventListener('DOMContentLoaded', restore_options());
+		document.addEventListener('DOMContentLoaded', self.restore_options());
 		document.addEventListener('DOMContentLoaded', function () {
-			document.getElementById('save').addEventListener('click',save_options);
-			document.getElementById('clrusrdat').addEventListener('click', clear_data);	
-			document.getElementById('like').addEventListener('change',connEcted);
-			document.getElementById('support_link').addEventListener('click', openSupportPage);
+			document.getElementById('save').addEventListener('click',self.save_options);
+			document.getElementById('clrusrdat').addEventListener('click', self.clear_data);	
+			document.getElementById('like').addEventListener('change', self.connEcted);
+			document.getElementById('support_link').addEventListener('click', self.openSupportPage);
 		});
 	};
 
@@ -44,7 +44,9 @@
 	};
 
 	ConverterOptions.prototype.parseUri = function(str) {
-		var	o   = parseUri.options,
+		var self = this;
+
+		var	o   = self.options,
 			m   = o.parser[o.strictMode ? "strict" : "loose"].exec(str),
 			uri = {},
 			i   = 14;
@@ -60,7 +62,7 @@
 	};
 
 	ConverterOptions.prototype.save_options = function(){
-		var theValue = getCheckedRadioValue("system"),status = document.getElementById('status');;
+		var self =this,  theValue = self.getCheckedRadioValue("system"), status = document.getElementById('status');
 
 		if (!theValue){
 			status.textContent = 'Please select one of the above and well do the rest!';
@@ -70,9 +72,7 @@
 			return;
 		}
 
-		// Save it using the Chrome extension storage API.
 		chrome.storage.sync.set({'usrOp': theValue},  function() {
-		// Update status to let user know options were saved.
 			var status = document.getElementById('status');
 			status.textContent = 'Options saved.';
 			setTimeout(function() {
@@ -80,12 +80,15 @@
 			}, 1750);
 			
 		});
+
 		if (theValue === "imperial"){
-		chrome.browserAction.setIcon({path:"images/mi.png"});
+			chrome.browserAction.setIcon({path:"images/mi.png"});
 		}
+
 		else if (theValue === "metric"){
-		chrome.browserAction.setIcon({path:"images/km.png"});
+			chrome.browserAction.setIcon({path:"images/km.png"});
 		}
+		
 		chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 			chrome.tabs.sendMessage(tabs[0].id, {'usrOp': theValue, applyScript : "restartWithScript"}, function(response) {	
 			});
@@ -113,13 +116,14 @@
 			}
 			
 		});
+
 		chrome.tabs.getSelected(null, function(tab) {
-			var url = tab.url;
-			var res = parseUri(url);
+			var self = this, url = tab.url, res = self.parseUri(url);
+
 			url = res.host;		
 			chrome.storage.sync.get(["urllist"],function (obj){
 				var t = obj.urllist || [];
-				if (t.contains(url)) 
+				if (t[self.contains(url)]) 
 				{
 					document.getElementById('like').checked = true;
 				}
@@ -128,10 +132,12 @@
 	};
 	
 	ConverterOptions.prototype.clear_data = function() {
+	    
 	    chrome.storage.sync.remove(["urllist","usrOp"], function() {
 	        for(var i = 0; i < key.length; i++)
 	            key[i];
 	    });
+		
 		if(document.getElementById('like').checked == true)
 		document.getElementById('like').checked = false;
 		document.holder.system[0].checked 		= false;
@@ -145,17 +151,22 @@
 	};
 	
 	ConverterOptions.prototype.connEcted = function(){
+		var self = this;
+
 		chrome.tabs.query({
 			active: true,               
 			lastFocusedWindow: true
 		},function(array_of_Tabs) {
-			var tab = array_of_Tabs[0], url = tab.url, res = parseUri(url);
+			var tab = array_of_Tabs[0], url = tab.url, res = self.parseUri(url);
+			
 			url = res.host;		
+			
 			chrome.storage.sync.get(["urllist"],function (obj){
 				var t = obj.urllist || [], contains = t.indexOf(url);
 			
 				if (contains > -1){
 					t.splice(contains, 1);
+
 					chrome.storage.sync.set({'urllist': t}, function (){ 
 						var status = document.getElementById('status');
 						status.textContent = 'Removed from dont run list! '+ '(' + url +')';
@@ -164,15 +175,18 @@
 						status.textContent = '';
 						}, 3000);
 					});
+
 				}else{
-					t.push(url); //Selector is a string
-					chrome.storage.sync.set({'urllist': t}, function (){ });   
-						var status = document.getElementById('status');
-						status.textContent = 'Added to dont run list!' + '(' + url + ')';
-						status.style.color = 'red';
-						setTimeout(function() {
+					t.push(url);
+
+					chrome.storage.sync.set({'urllist': t}, function (){});   
+					var status = document.getElementById('status');
+
+					status.textContent = 'Added to dont run list!' + '(' + url + ')';
+					status.style.color = 'red';
+					setTimeout(function() {
 						status.textContent = '';
-						}, 3000);
+					}, 3000);
 				}
 				chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 					chrome.tabs.sendMessage(tabs[0].id, {applyScript : 'restartWithScript'}, function(response) {	
