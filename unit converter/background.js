@@ -1,5 +1,5 @@
 +function(){
-	var Converter = function(){
+  	function Converter(){
 		this.config = {
 
 		};
@@ -15,6 +15,7 @@
 	};
 	
 	Converter.prototype.attachevents = function(){
+		var self = this;
 
 		chrome.runtime.onMessage.addListener(
 			function(request, sender,sendResponse) {
@@ -96,10 +97,6 @@
 		miles = match / 1.60934;
 		return miles.toFixed(2);
 	};
-	
-	document.ondomcontentready = function (){
-		if(converter === 'undefined'){
-			new Converter();
-		}
-	};
+
+	new Converter();
 }();

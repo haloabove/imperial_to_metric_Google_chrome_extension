@@ -1,5 +1,6 @@
 +function(){
-	var ConverterOptions = function(){
+
+	function ConverterOptions(){
 		this.parseUri.options = {
 			strictMode: false,
 			key: ["source","protocol","authority","userInfo","user","password","host","port","relative","path","directory","file","query","anchor"],
@@ -18,10 +19,14 @@
 	};
 	
 	ConverterOptions.prototype.init = function(){
-		this.attachEvents();
+		var self = this;
+
+		self.attachEvents();
 	};
 	
 	ConverterOptions.prototype.attachEvents = function(){
+		var self = this; 
+
 		document.addEventListener('DOMContentLoaded', restore_options());
 		document.addEventListener('DOMContentLoaded', function () {
 			document.getElementById('save').addEventListener('click',save_options);
@@ -181,9 +186,9 @@
 		chrome.tabs.create( { url: "http://jovcevski.mk/support"} );
 	};
 
-	document.ondomcontentready = function (){
-		if(ConverterOptions === 'undefined'){
-			new ConverterOptions();
-		}
+	ConverterOptions.prototype.ready = function(f){
+		/in/.test(document.readyState)?setTimeout(r,9,f):f()
 	};
+
+	new ConverterOptions();
 }();
