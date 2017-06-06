@@ -47,7 +47,7 @@
 					this.replaceInElement(document.body, miMatch, function(match) {
 						var itmReplaced = document.createElement('b'), value = match[2].replace(/[,\s.']/, "") + (match[4] !== undefined ? match[4].replace(/[,\s.']/, ".") : ".00");
 						
-						itmReplaced.appendChild(document.createTextNode(this.fromMilesToKm(value)+' Kilometer '));
+						itmReplaced.appendChild(document.createTextNode(this.fromMilesToKm(value)+' Kilometers '));
 						return itmReplaced;
 					}.bind(this));
 				}
