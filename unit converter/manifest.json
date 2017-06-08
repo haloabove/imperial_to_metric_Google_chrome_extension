@@ -3,7 +3,7 @@
  
   "name": "Imperial or metric",
   "description": "This extension converts units of measurment from and to metric and imperial system on the fly in all the web pages.",
-  "version": "1.4",
+  "version": "1.4.1",
   "permissions": ["storage","tabs","http://*/" ,"activeTab","*://*/*"],
   "icons" : { "16": "images/16.png",
             "48": "images/48.png",

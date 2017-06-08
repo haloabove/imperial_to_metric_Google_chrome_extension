@@ -31,7 +31,7 @@
 	
 			if (t.indexOf(url) == -1){
 				if(items.usrOp === 'imperial'){
-					var kmMatch = /((\d{1,3}([,\s.']\d{3})*|\d+)([.,]\d+)?)\s*(km|Km|Kilometer|Kilometers|kilometers)\b/g;
+					var kmMatch = /((\d{1,3}([,\s.']\d{3})*|\d+)([.,]\d+)?)\s*(km|Km|Kilometer|kilometer|Kilometers|kilometers)\b/g;
 
 					this.replaceInElement(document.body, kmMatch, function(match) {
 						var itmReplaced = document.createElement('b'), value = match[2].replace(/[,\s.']/, "") + (match[4] !== undefined ? match[4].replace(/[,\s.']/, ".") : ".00");
